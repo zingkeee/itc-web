@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Z-HUB</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #ffffff;
+            line-height: 1.6;
+            background-image: url('https://i.imgur.com/KboAwwq.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+        .logo img {
+            width: 40px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style-type: none;
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 300;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active {
+            color: #00ffff;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 7rem auto 3rem;
+            padding: 2rem;
+            background-color: rgba(18, 18, 18, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: #00ffff;
+            color: #121212;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #00cccc;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+            }
+
+            nav ul li {
+                margin-left: 0;
+                margin-right: 1rem;
+            }
+
+            main {
+                margin-top: 10rem;
+            }
+
+            .about-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .about-image-container {
+                margin-top: 1rem;
+            }
+        }
+
+        .page {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, visibility 0s 0.5s;
+        }
+
+        .page:target {
+            visibility: visible;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out, visibility 0s 0s;
+        }
+
+        #home {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .about-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .about-details {
+            flex: 1;
+            text-align: left;
+        }
+
+        .about-image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .about-img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .about-img:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .about-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .about-details, .about-image-container {
+                text-align: center;
+            }
+        }
+
+        .portfolio-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+        }
+
+        .portfolio-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        transition: transform 0.3s ease-in-out;
+        }
+
+        .portfolio-item:hover {
+        transform: scale(1.05);
+        }
+
+        .portfolio-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: filter 0.3s ease-in-out;
+        }
+
+        .portfolio-item:hover img {
+        filter: brightness(50%);
+        }
+
+        .portfolio-description {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #ffffff;
+        padding: 1rem;
+        transform: translateY(100%);
+        transition: transform 0.3s ease-in-out;
+        }
+
+        .portfolio-item:hover .portfolio-description {
+        transform: translateY(0);
+        }
+
+        .portfolio-description h3 {
+        margin-bottom: 0.5rem;
+        color: #00ffff;
+        }
+
+        .portfolio-description p {
+        font-size: 0.9rem;
+        margin-bottom: 0;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="https://i.imgur.com/4wkmzug.png" alt="Z-HUB Logo" class="logo-img">
+                <span>Z-HUB</span>
+            </div>
+            <ul>
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#insights">Insights</a></li>
+                <li><a href="#about">About Me</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#appreciation">Appreciation</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="home" class="page">
+        <h1>Welcome to Z-HUB!!</h1>
+        <p><strong>Welcome to my site!</strong> <br><br> I truly hope you can learn some things here that are beneficial in Introduction to Computing! Whether you're new to tech or just looking to brush up on the basics, this is the perfect place to start. You'll find easy-to-understand guides on the different types of computers, number systems, and all the cool stuff you can do with technology. Let’s get started and have fun exploring the world of computing!</p>
+    </main>
+
+    <main id="insights" class="page">
+        <h1>What You’ll Learn in Introduction to Computing</h1>
+        <p><strong>Welcome to your first semester of computing! In this course, you’ll get a solid understanding of the key concepts that form the foundation of all things tech. Here’s a glimpse at what you’ll learn:</strong></p>
+
+        <p><strong>1. How Computers Work</strong><br>
+        You’ll learn about the basic components of a computer, like the CPU, memory, and storage, and how they work together to process data. Understanding how a computer works will help you see the bigger picture behind everything from using apps to browsing the web.</p>
+
+        <p><strong>2. Operating Systems and Software</strong><br>
+        You'll explore how operating systems like Windows or Linux manage hardware and software resources. You’ll also understand the difference between system software (like an OS) and application software (like a word processor or browser).</p>
+
+        <p><strong>3. Data Representation</strong><br>
+        In this section, you’ll learn how computers represent and store data. You’ll understand binary numbers (the language of computers), how data is stored in files, and how information is transmitted across networks.</p>
+
+        <p><strong>4. Computer Networks and the Internet</strong><br>
+        You’ll gain an understanding of how computers communicate with each other through networks, and how the internet allows us to connect with others globally. Topics like IP addresses, routers, and protocols will be covered.</p>
+
+        <p><strong>5. Ethical Issues in Computing</strong><br>
+        Computing isn’t just about technology — it’s about how we use it responsibly. You’ll learn about important topics like privacy, digital rights, and the impact of technology on society.</p>
+
+        <p><strong>What’s Next?</strong><br>
+        By the end of the semester, you'll have a solid foundation in computing that will prepare you for more advanced topics, whether you continue in computing or explore other fields. You’ll understand how the world of technology works and how to interact with it safely and efficiently!</p>
+
+        <a href="#home" class="back-button">Back to Home</a>
+    </main>
+
+    <main id="about" class="page">
+        <h1>About Me</h1>
+        <p>Learn more about me!!</p>
+        
+        <div class="about-container">
+            <div class="about-details">
+                <p><strong>Name:</strong> Neil Ryan B. Codera (aka yanyan)</p>
+    
+                <p><strong>Educational Background:</strong></p>
+                <p>I chose IT as my course mainly because I was fascinated with computers since I was a kid. A bonus would be some of my friends' influence.</p>
+    
+                <p><strong>What made you choose this course?</strong></p>
+                <p><strong>Elementary:</strong> Tandang Sora Elementary School (2018)</p>
+                <p><strong>High Schools:</strong>
+                    <ul>
+                        <li>Tañon College (2022)</li>
+                        <li>Julio Ledesma National High School (2024)</li>
+                    </ul>
+                </p>
+    
+                <p><strong>Main reason for making this site:</strong> <br><br> Final project for this subject :P</p>
+            </div>
+
+            <div class="about-image-container">
+                <img src="https://i.imgur.com/dqNfyTH.jpg" alt="About Me Image" class="about-img">
+            </div>
+        </div>
+
+        <a href="#home" class="back-button">Back to Home</a>
+    </main>
+
+    <main id="portfolio" class="page">
+        <h1>My Portfolios :></h1>
+        <p>Just click on these pictures to open the contents!</p>
+        
+        <div class="portfolio-grid">
+            <a href="https://www.canva.com/design/DAGOp7W2wrs/mipD9qaVJ_YHuPbQZQIbOw/view?utm_content=DAGOp7W2wrs&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h170d5300e6" target="_blank" class="portfolio-item">
+                <img src="https://i.imgur.com/9hgF9pn.png" alt="Project 1">
+                <div class="portfolio-description">
+                    <h3>Portfolio #1</h3>
+                    <p>Computer Science as Discipline, Computing Disciplines and Majors.</p>
+                </div>
+            </a>
+            <a href="https://www.canva.com/design/DAGPvEpdwGM/8WF8jZXiYPk7UXTCcdsrGw/view?utm_content=DAGPvEpdwGM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hbe206b85ef" target="_blank" class="portfolio-item">
+                <img src="https://i.imgur.com/PthR8KN.png" alt="Project 2">
+                <div class="portfolio-description">
+                    <h3>Portfolio #2</h3>
+                    <p>Data, Information, and Information Systems.</p>
+                </div>
+            </a>
+            <a href="https://www.canva.com/design/DAGQz_SaRQQ/w1sC6Tdby1IvsiIniYu7xQ/view?utm_content=DAGQz_SaRQQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha43dd15c88" target="_blank" class="portfolio-item">
+                <img src="https://i.imgur.com/4B4Svir.png" alt="Project 3">
+                <div class="portfolio-description">
+                    <h3>Portfolio #3</h3>
+                    <p>Number Systems.</p>
+                </div>
+            </a>
+            <a href="https://www.canva.com/design/DAGV5yQBdpw/H-kDkrT4_DMfalRY8lRp-g/view?utm_content=DAGV5yQBdpw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hc227b3a30d" target="_blank" class="portfolio-item">
+                <img src="https://i.imgur.com/O3I3aVM.png" alt="Project 4">
+                <div class="portfolio-description">
+                    <h3>Portfolio #4</h3>
+                    <p>Computer Hardware and Software.</p>
+                </div>
+            </a>
+            <a href="https://www.canva.com/design/DAGWjOU41JY/guFdS85iItxS6wbNozyXKw/view?utm_content=DAGWjOU41JY&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h530703bed8" target="_blank" class="portfolio-item">
+                <img src="https://i.imgur.com/OEm2vz2.png" alt="Project 5">
+                <div class="portfolio-description">
+                    <h3>Portfolio #5</h3>
+                    <p>Comparative Study On Different Types Of Motherboards.</p>
+                </div>
+            </a>
+            <a href="https://www.canva.com/design/DAGXLEL5Aqo/CxNaqRzKfSEKt_7b5LD9Qw/view?utm_content=DAGXLEL5Aqo&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h9a93070561" target="_blank" class="portfolio-item">
+                <img src="https://i.imgur.com/4fqmmtd.png" alt="Project 6">
+                <div class="portfolio-description">
+                    <h3>Portfolio #6</h3>
+                    <p>Comparative Study on Different Types of Computers.</p>
+                </div>
+            </a>
+        </div>
+        <a href="#home" class="back-button">Back to Home</a>
+    </main>
+
+    <main id="appreciation" class="page">
+        <h1>Appreciation</h1>
+        <p>Thank you so much for visiting my site! 😊</p>
+        <p>I really appreciate you taking the time to check out the content and learn about computing. Whether you're just starting or learning more, I'm happy to be part of your journey.</p>
+        <p>I hope the information here helps you in your studies and inspires you to explore more. Remember, every little step counts, and you’re doing great!</p>
+        <p>Feel free to come back anytime! There’s always more to discover.</p>
+        <p>Thanks again for being here!</p>
+        <a href="#home" class="back-button">Back to Home</a>
+    </main>
+
+    <footer>
+        <p> "Technology is not just a tool; it's the key to unlocking endless possibilities."</p>
+    </footer>
+</body>
+</html>
